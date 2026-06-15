@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自律学习小屋</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: "Noto Sans SC", sans-serif;
+        }
+        body {
+            background-color: #ffffff;
+            margin: 0;
+            overflow-x: hidden;
+            position: relative;
+        }
+        /* 云朵动画装饰 */
+        .cloud {
+            position: absolute;
+            background-color: #fef2f6;
+            border-radius: 999px;
+            filter: blur(6px);
+            opacity: 0.7;
+            z-index: -1;
+        }
+        .cloud1 {width:140px;height:70px;top:12%;left:6%;animation: float 9s ease-in-out infinite;}
+        .cloud2 {width:180px;height:90px;top:30%;right:8%;animation: float 11s ease-in-out infinite reverse;}
+        .cloud3 {width:100px;height:50px;bottom:15%;left:12%;animation: float 8s ease-in-out infinite;}
+        @keyframes float {
+            0%{transform: translateY(0);}
+            50%{transform: translateY(-14px);}
+            100%{transform: translateY(0);}
+        }
+        /* 导航样式 */
+        .main-nav{
+            background-color:#fde8ee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding:1rem 2.5rem;
+        }
+        .nav-link{
+            color:#d888a2;
+            margin-left:2rem;
+            cursor: pointer;
+        }
+        /* 顶部渐变横幅 —— 加高高度，让下方科目完全滚出可视区 */
+        .hero-banner{
+            background: linear-gradient(#fde8ee,#ffffff);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .banner-title{
+            font-size:3rem;
+            color:#d888a2;
+            font-weight:500;
+        }
+        .banner-subtext{
+            color:#e2a8b9;
+            margin-top:0.8rem;
+        }
+        .banner-deco{
+            display:flex;
+            gap:1rem;
+            margin-top:2rem;
+            font-size:1.8rem;
+        }
+        .cute-card{
+            background:#ffffff;
+            border-radius:22px;
+            box-shadow:0 4px 14px rgba(248,216,226,0.35);
+            padding:2.5rem;
+        }
+        .btn-cute{
+            background-color:#fce4ec;
+            border-radius:16px;
+            transition: all 0.25s ease;
+            color:#c97894;
+            padding:0.7rem 2rem;
+            border:none;
+            cursor: pointer;
+        }
+        .btn-cute:hover{
+            background-color:#f8d3df;
+            transform: translateY(-3px);
+            box-shadow:0 4px 10px #fad9e4;
+        }
+        .grid-subject{
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap:2rem;
+        }
+        .page-footer{
+            background:#333333;
+            color:#fce4ec;
+            text-align:center;
+            padding:2rem;
+            margin-top:6rem;
+        }
+        .max-container{
+            max-width: 1440px;
+            margin: 0 auto;
+            padding:0 24px;
+        }
+        /* 科目区域额外上间距，确保首页完全看不见 */
+        #subject-section{
+            margin-top: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+
+    <!--导航栏-->
+    <nav class="main-nav">
+        <span class="text-2xl text-pink-600 font-medium">自律学习小屋</span>
+        <div>
+            <span class="nav-link" onclick="showHome()">首页</span>
+            <span class="nav-link">科目选择</span>
+            <span class="nav-link">番茄计时</span>
+            <span class="nav-link">打卡记录</span>
+        </div>
+    </nav>
+
+    <!--首页容器-->
+    <div id="home-page">
+        <section class="hero-banner">
+            <h1 class="banner-title">请开始学习哦</h1>
+            <p class="banner-subtext">专注打卡，一步步完成自己的目标</p >
+            <div class="banner-deco">
+                <span>☁️</span><span>🐰</span><span>🌷</span><span>🍓</span>
+            </div>
+            <button class="btn-cute mt-6" onclick="scrollSubject()">选择科目开始复习</button>
+        </section>
+
+        <section class="py-16 max-container" id="subject-section">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl text-pink-500">复习科目</h2>
+                <p class="text-pink-300 mt-2">挑选今天需要攻克的学科</p >
+            </div>
+            <div class="grid-subject">
+                <div class="cute-card text-center">
+                    <div class="text-4xl mb-4">📐</div>
+                    <h3 class="text-xl text-pink-600">高数</h3>
+                    <button onclick="openSubject('高数')" class="btn-cute mt-4 w-full">开启番茄钟</button>
+                </div>
+                <div class="cute-card text-center">
+                    <div class="text-4xl mb-4">⚛️</div>
+                    <h3 class="text-xl text-pink-600">大物</h3>
+                    <button onclick="openSubject('大物')" class="btn-cute mt-4 w-full">开启番茄钟</button>
+                </div>
+                <div class="cute-card text-center">
+                    <div class="text-4xl mb-4">📖</div>
+                    <h3 class="text-xl text-pink-600">英语</h3>
+                    <button onclick="openSubject('英语')" class="btn-cute mt-4 w-full">开启番茄钟</button>
+                </div>
+                <div class="cute-card text-center">
+                    <div class="text-4xl mb-4">🔌</div>
+                    <h3 class="text-xl text-pink-600">电路</h3>
+                    <button onclick="openSubject('电路')" class="btn-cute mt-4 w-full">开启番茄钟</button>
+                </div>
+                <div class="cute-card text-center">
+                    <div class="text-4xl mb-4">📝</div>
+                    <h3 class="text-xl text-pink-600">习概</h3>
+                    <button onclick="openSubject('习概')" class="btn-cute mt-4 w-full">开启番茄钟</button>
+                </div>
+                <div class="cute-card text-center">
+                    <div class="text-4xl mb-4">📜</div>
+                    <h3 class="text-xl text-pink-600">思政</h3>
+                    <button onclick="openSubject('思政')" class="btn-cute mt-4 w-full">开启番茄钟</button>
+                </div>
+            </div>
+
+            <div class="cute-card mt-16 grid md:grid-cols-2 gap-10 items-center">
+                <div class="text-5xl">✨</div>
+                <div>
+                    <h3 class="text-2xl text-pink-500 mb-4">打卡激励计划</h3>
+                    <p class="text-gray-500">每完成一次45分钟番茄学习，打卡进度前进一格，累计10次学习即可领取奖励，督促自己坚持自律。</p >
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!--番茄钟页面-->
+    <div id="study-page" style="display:none;">
+        <nav class="main-nav">
+            <span class="text-2xl text-pink-600 font-medium">自律学习小屋</span>
+            <div>
+                <span class="nav-link" onclick="showHome()">返回首页</span>
+            </div>
+        </nav>
+        <section class="py-16 max-container">
+            <div class="cute-card grid md:grid-cols-2 gap-12">
+                <div>
+                    <h2 class="text-2xl text-pink-500 mb-6" id="subject-title">高数</h2>
+                    <p class="text-pink-400">番茄打卡进度</p >
+                    <div class="w-full h-8 bg-pink-50 rounded-full overflow-hidden mt-3">
+                        <div id="progress-bar" class="h-full bg-pink-300 w-0 transition-all duration-500"></div>
+                    </div>
+                    <p class="mt-4 text-pink-400">已完成：<span id="count-num">0</span>/10 次学习</p >
+                    <button id="exchange-btn" onclick="showModal()" class="btn-cute mt-6 w-full" style="display:none;">兑换奖励</button>
+                    <div class="flex gap-3 mt-10 text-3xl">
+                        <span>🐾</span><span>🌸</span><span>🍬</span>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center justify-center">
+                    <div class="text-6xl text-pink-500 my-12" id="timer-text">45:00</div>
+                    <div class="flex gap-5">
+                        <button id="start-btn" onclick="startTimer()" class="btn-cute">开启专注学习</button>
+                        <!-- 新增暂停按钮 -->
+                        <button id="pause-btn" onclick="pauseTimer()" class="btn-cute" style="background:#fce4ec80;">暂停</button>
+                        <button onclick="resetTimer()" class="btn-cute" style="background:#fce4ec80;">重置计时</button>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-pink-50 mt-8 w-full text-center">
+                        <p class="text-pink-400 text-sm">45 分钟高效学习，结束自动进入15 分钟放松休息时间</p >
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!--奖励弹窗-->
+    <div id="modal" style="display:none;position:fixed;inset:0;background:rgba(252,228,236,0.3);display:flex;align-items:center;justify-content:center;z-index:50;">
+        <div class="cute-card text-center max-w-sm">
+            <div class="text-5xl mb-5">🎉</div>
+            <p class="text-pink-600 text-lg">恭喜你，已经复习了450分钟啦！这门科目不用担心了哦</p >
+            <button onclick="closeModal()" class="btn-cute mt-7">继续加油学习</button>
+        </div>
+    </div>
+
+    <footer class="page-footer">
+        <h2 class="text-2xl mb-4">自律学习小屋</h2>
+        <p>坚持打卡，养成良好的学习习惯</p >
+    </footer>
+
+    <script>
+        let currentSubject = "";
+        let tomatoCount = 0;
+        let timer = null;
+        let totalSeconds = 45 * 60;
+        let isStudyMode = true;
+
+        //页面切换函数，全部直接操作display，规避classList异常
+        function showHome(){
+            document.getElementById("home-page").style.display = "block";
+            document.getElementById("study-page").style.display = "none";
+            clearInterval(timer);
+        }
+        function scrollSubject(){
+            document.getElementById("subject-section").scrollIntoView({behavior:"smooth"});
+        }
+        function openSubject(subject) {
+            currentSubject = subject;
+            tomatoCount = 0;
+            resetProgress();
+            document.getElementById("subject-title").innerText = subject;
+            document.getElementById("home-page").style.display = "none";
+            document.getElementById("study-page").style.display = "block";
+            resetTimer();
+        }
+
+        function formatTime(s) {
+            const min = String(Math.floor(s / 60)).padStart(2, "0");
+            const sec = String(s % 60).padStart(2, "0");
+            return `${min}:${sec}`;
+        }
+
+        function startTimer() {
+            if (timer) return;
+            document.getElementById("start-btn").disabled = true;
+            document.getElementById("pause-btn").disabled = false;
+            timer = setInterval(() => {
+                totalSeconds--;
+                document.getElementById("timer-text").innerText = formatTime(totalSeconds);
+                if (totalSeconds <= 0) {
+                    clearInterval(timer);
+                    timer = null;
+                    if (isStudyMode) {
+                        tomatoCount++;
+                        updateProgress();
+                        isStudyMode = false;
+                        totalSeconds = 15 * 60;
+                        alert("学习时段结束，放松休息一会吧！");
+                        startTimer();
+                    } else {
+                        isStudyMode = true;
+                        totalSeconds = 45 * 60;
+                        document.getElementById("start-btn").disabled = false;
+                    }
+                }
+            }, 1000);
+        }
+
+        // 新增：暂停计时
+        function pauseTimer() {
+            clearInterval(timer);
+            timer = null;
+            document.getElementById("start-btn").disabled = false;
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            timer = null;
+            isStudyMode = true;
+            totalSeconds = 45 * 60;
+            document.getElementById("timer-text").innerText = "45:00";
+            document.getElementById("start-btn").disabled = false;
+        }
+
+        function updateProgress() {
+            document.getElementById("count-num").innerText = tomatoCount;
+            const percent = tomatoCount * 10;
+            document.getElementById("progress-bar").style.width = `${percent}%`;
+            if (tomatoCount >= 10) {
+                document.getElementById("exchange-btn").style.display = "block";
+            }
+        }
+
+        function resetProgress() {
+            tomatoCount = 0;
+            document.getElementById("progress-bar").style.width = "0%";
+            document.getElementById("count-num").innerText = "0";
+            document.getElementById("exchange-btn").style.display = "none";
+        }
+
+        function showModal() {
+            document.getElementById("modal").style.display = "flex";
+        }
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+            resetProgress();
+        }
+    </script>
+</body>
+</html>
